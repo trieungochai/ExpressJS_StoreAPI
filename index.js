@@ -5,15 +5,24 @@ const express = require("express");
 const app = express();
 const errorHandlerMiddleware = require("./middleware/error-handler.middleware");
 const notFoundMiddleware = require("./middleware/not-found.middleware");
+
+const productsRouter = require("./routes/products.router");
+
 // middleware
 app.use(express.json());
-app.use(errorHandlerMiddleware);
-app.use(notFoundMiddleware);
 
 // routes
-app.get("/hello", (res, req) => {
-  console.log("See you Space Cowboy");
+app.get("/", (req, res) => {
+  return res.send(
+    "<h1>Store API</h1><a href='/api/v1/products'>Product route</a>"
+  );
 });
+
+app.use("/api/v1/products", productsRouter);
+
+// products route
+app.use(errorHandlerMiddleware);
+app.use(notFoundMiddleware);
 
 const PORT = process.env.PORT || 8000;
 
